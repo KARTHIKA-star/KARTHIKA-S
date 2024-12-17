@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        input, textarea {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .error-border {
+            border: 1px solid red;
+        }
+
+        .form-container {
+            width: 300px;
+            margin: auto;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var firstName = document.getElementById("firstName");
+            var lastName = document.getElementById("lastName");
+            var password = document.getElementById("password");
+            var email = document.getElementById("email");
+            var mobile = document.getElementById("mobile");
+            var address = document.getElementById("address");
+
+            var isValid = true;
+            clearErrors();
+            var namePattern = /^[A-Za-z]+$/;
+            if (!namePattern.test(firstName.value) || firstName.value.length < 6) {
+                setError(firstName, "First Name should contain only alphabets and be at least 6 characters long.");
+                isValid = false;
+            }
+            if (lastName.value.trim() === "") {
+                setError(lastName, "Last Name cannot be empty.");
+                isValid = false;
+            }
+            if (password.value.length < 6) {
+                setError(password, "Password should be at least 6 characters long.");
+                isValid = false;
+            }
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email.value)) {
+                setError(email, "Please enter a valid email address (e.g., name@domain.com).");
+                isValid = false;
+            }
+            var mobilePattern = /^\d{10}$/;
+            if (!mobilePattern.test(mobile.value)) {
+                setError(mobile, "Mobile Number should contain exactly 10 digits.");
+                isValid = false;
+            }
+            if (address.value.trim() === "") {
+                setError(address, "Address cannot be empty.");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function setError(element, message) {
+            var errorMessage = document.createElement("div");
+            errorMessage.classList.add("error");
+            errorMessage.textContent = message;
+            clearErrorMessages(element);
+            element.parentElement.appendChild(errorMessage);
+            element.classList.add("error-border");
+        }
+
+        function clearErrors() {
+            var errorMessages = document.querySelectorAll(".error");
+            for (var i = 0; i < errorMessages.length; i++) {
+                errorMessages[i].remove();
+            }
+            var formElements = document.querySelectorAll("input, textarea");
+            for (var i = 0; i < formElements.length; i++) {
+                formElements[i].classList.remove("error-border");
+            }
+        }
+
+        function clearErrorMessages(element) {
+            var existingErrorMessage = element.parentElement.querySelector(".error");
+            if (existingErrorMessage) {
+                existingErrorMessage.remove();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Registration Form</h2>
+    <div class="form-container">
+        <form onsubmit="return validateForm()">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName"><br>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName"><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br>
+
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email"><br>
+
+            <label for="mobile">Mobile Number:</label>
+            <input type="text" id="mobile" name="mobile"><br>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address"></textarea><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
